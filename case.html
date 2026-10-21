@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case study | Tiziano Bonsignore</title>
+  <meta name="description" content="Case study by Tiziano Bonsignore, front-end developer and digital designer.">
+  <meta name="theme-color" content="#0A0A0A">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="manifest" href="favicon/site.webmanifest">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="cs-page">
+
+  <div class="progress" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="index.html#top">Tiziano<span class="accent">.</span></a>
+
+    <nav class="nav" aria-label="Main">
+      <a href="index.html#about">About</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#works">Works</a>
+      <a href="index.html#contacts">Contact</a>
+    </nav>
+
+    <a class="btn btn-accent nav-cta" href="index.html#contacts" data-magnet><span class="btn-txt" data-roll>Let's talk</span><span class="btn-ico" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8h9M8 4l4 4-4 4"/></svg></span></a>
+
+    <button class="menu-toggle mono" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menu">
+      <span class="menu-label">Menu</span>
+      <span class="bars" aria-hidden="true"><i></i><i></i></span>
+    </button>
+  </header>
+
+  <div class="m-overlay" id="mobile-menu" aria-hidden="true">
+    <div class="m-bg" aria-hidden="true"></div>
+    <nav class="m-nav" aria-label="Mobile">
+      <a class="m-link" href="index.html#about"><span class="m-mask"><span class="m-in">About</span></span><span class="m-idx mono">01</span></a>
+      <a class="m-link" href="index.html#services"><span class="m-mask"><span class="m-in">Services</span></span><span class="m-idx mono">02</span></a>
+      <a class="m-link" href="index.html#works"><span class="m-mask"><span class="m-in">Works</span></span><span class="m-idx mono">03</span></a>
+      <a class="m-link" href="index.html#contacts"><span class="m-mask"><span class="m-in">Contact</span></span><span class="m-idx mono">04</span></a>
+    </nav>
+    <div class="m-foot mono">
+      <a class="m-mail" href="mailto:tiziano.bonsignore.wd@gmail.com">tiziano.bonsignore.wd@gmail.com</a>
+      <ul class="m-socials">
+        <li><a href="https://www.linkedin.com/in/tiziano-bonsignore-1148a115b/" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://www.behance.net/tizianobonsign" target="_blank" rel="noopener">Behance</a></li>
+        <li><a href="https://www.instagram.com/tiziano_bonsignore_wd/" target="_blank" rel="noopener">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <main id="case">
+    <noscript><section class="cs-section"><div class="wrap"><p class="body">Per vedere il case study serve JavaScript.</p></div></section></noscript>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p class="foot-big" aria-hidden="true">Tiziano</p>
+      <div class="foot-row mono">
+        <p>&copy; 2026 Tiziano Bonsignore</p>
+        <a href="index.html#top">Back to top <svg class="arrow-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 13V3M4 7l4-4 4 4"/></svg></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+  <script src="cases.js"></script>
+  <script src="case.js"></script>
+</body>
+</html>
