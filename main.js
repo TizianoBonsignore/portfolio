@@ -10,6 +10,14 @@
   const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   const hasGsap = typeof window.gsap !== "undefined" && typeof window.ScrollTrigger !== "undefined";
 
+  // Header: niente transizione finché la pagina non ha preso la posizione di scroll iniziale
+  // (al ritorno dal case study l'header passerebbe animando dalla barra piena alla capsula).
+  root.classList.add("no-header-anim");
+  const releaseHeader = () =>
+    requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("no-header-anim")));
+  if (document.readyState === "complete") releaseHeader();
+  else window.addEventListener("load", releaseHeader, { once: true });
+
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
 
@@ -303,6 +311,8 @@
         trigger: sec,
         start: "top 50%",
         end: "bottom 50%",
+        // Calcolato dopo gli altri trigger: per Works deve includere lo spazio aggiunto dal pin
+        refreshPriority: -1,
         onToggle: (self) => {
           a.classList.toggle("is-active", self.isActive);
           if (!nav.matches(":hover")) moveGlow($("a.is-active", nav));
@@ -536,6 +546,22 @@
         { x: 0, opacity: 1, ease: "none", scrollTrigger: { ...cfg, trigger: card, start: "left 95%", end: "left 60%", scrub: true } }
       );
     });
+  });
+
+  /* ---------- Works in viola: lo sfondo sfuma nel colore del brand mentre la sezione è a schermo ---------- */
+  // Viola solo mentre la sezione è bloccata dal pin: si accende quando arriva in cima, si spegne appena si sblocca.
+  // refreshPriority -1: calcolato dopo il pin, così la fine tiene conto dello spazio aggiunto dal pin
+  ScrollTrigger.create({
+    trigger: worksSection,
+    start: "top 5%",
+    end: "bottom 95%",
+    refreshPriority: -1,
+    onToggle: (self) => {
+      // Più si scorre veloce, più la dissolvenza è breve: a velocità alta il colore cambia quasi subito
+      const v = Math.abs(self.getVelocity());
+      root.style.setProperty("--works-fade", `${gsap.utils.clamp(0.12, 0.9, 900 / (v || 1))}s`);
+      root.classList.toggle("works-on", self.isActive);
+    },
   });
 
   /* ---------- Servizi: accordion con anteprima, si apre e si chiude ---------- */
@@ -867,24 +893,36 @@
 
   /* ---------- Refresh dopo il caricamento delle immagini ---------- */
   /* ---------- Ritorno da un case study: riporta la home alla posizione salvata, prima del primo disegno ---------- */
-  let restored = false;
+  // Dal menu di un case study ("home-target", es. #about) si arriva direttamente su quella sezione:
+  // la pagina compare già lì e la view transition fa la dissolvenza, senza salti né preloader.
+  let saved = null;
+  let homeTarget = null;
+  try {
+    saved = sessionStorage.getItem("home-scroll");
+    homeTarget = sessionStorage.getItem("home-target");
+    sessionStorage.removeItem("home-scroll");
+    sessionStorage.removeItem("home-target");
+  } catch (e) {}
   const restoreHome = () => {
-    if (restored || !fromCase || location.hash) return;
-    restored = true;
-    let saved = null;
-    try {
-      saved = sessionStorage.getItem("home-scroll");
-      sessionStorage.removeItem("home-scroll");
-    } catch (e) {}
-    if (saved === null) return;
-    const y = Number(saved) || 0;
+    if (!fromCase || location.hash) return;
+    let y = null;
+    if (homeTarget) {
+      const el = homeTarget === "#top" ? null : $(homeTarget);
+      y = el ? el.getBoundingClientRect().top + window.scrollY - 70 : 0;
+    } else if (saved !== null) {
+      y = Number(saved) || 0;
+    }
+    if (y === null) return;
     if (lenis) lenis.scrollTo(y, { immediate: true, force: true });
     else window.scrollTo(0, y);
     ScrollTrigger.update();
   };
   restoreHome();
+  if (homeTarget) history.replaceState(null, "", homeTarget === "#top" ? "index.html" : homeTarget);
   window.addEventListener("load", () => {
     ScrollTrigger.refresh();
+    // dopo il caricamento delle immagini le sezioni possono essersi spostate: si riallinea
     restoreHome();
+    homeTarget = saved = null;
   });
 })();

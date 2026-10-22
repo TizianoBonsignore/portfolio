@@ -8,6 +8,14 @@
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   const hasGsap = typeof window.gsap !== "undefined" && typeof window.ScrollTrigger !== "undefined";
+
+  // Header: niente transizione finché la pagina non ha preso la posizione di scroll iniziale
+  // (al ritorno dal case study l'header passerebbe animando dalla barra piena alla capsula).
+  root.classList.add("no-header-anim");
+  const releaseHeader = () =>
+    requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove("no-header-anim")));
+  if (document.readyState === "complete") releaseHeader();
+  else window.addEventListener("load", releaseHeader, { once: true });
   const $ = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
 
@@ -68,6 +76,27 @@
     }
     $$("a", nav).forEach((a) => a.addEventListener("transitionend", placeGlow));
   }
+
+  /* ---------- Menu verso una sezione della home: niente preloader, si arriva già sulla sezione ---------- */
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest('a[href^="index.html#"]');
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
+    try {
+      sessionStorage.setItem("from-case", "1");
+      sessionStorage.setItem("home-target", a.getAttribute("href").slice("index.html".length));
+      sessionStorage.removeItem("home-scroll");
+    } catch (err) {}
+    location.href = "index.html";
+  });
+
+  /* ---------- Torna su: scorre all'inizio del case study ---------- */
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".to-top")) return;
+    e.preventDefault();
+    if (lenis) lenis.scrollTo(0);
+    else window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+  });
 
   /* ---------- Link "Back to works": torno in home senza preloader ---------- */
   document.addEventListener("click", (e) => {

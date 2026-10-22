@@ -450,7 +450,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   border: 1px solid var(--line);
   transition: border-color .4s, color .4s;
 }
-.scroll-cue:hover .scroll-ring { border-color: var(--accent); color: var(--accent); }
+.scroll-cue:hover .scroll-ring, .to-top:hover .scroll-ring { border-color: var(--accent); color: var(--accent); }
 .scroll-ring .arrow-ico { width: 16px; height: 16px; margin: 0; animation: nudge 1.8s var(--ease) infinite; }
 @keyframes nudge {
   0%, 100% { transform: translateY(-2px); opacity: .5; }
@@ -831,13 +831,21 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 
 /* ---------- Works (pinned horizontal scroll) ---------- */
-.works { position: relative; background: var(--bg-2); isolation: isolate; }
+/* Sfondo trasparente: il colore è quello del body, che sfuma nel viola (vedi "Works in viola") */
+.works { position: relative; isolation: isolate; }
+/* Colore dei puntini come proprietà registrata, così può sfumare insieme allo sfondo */
+@property --dot {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: rgba(139, 92, 246, 0.22);
+}
 .works::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-image: radial-gradient(rgba(var(--accent-rgb), 0.22) 1px, transparent 1.5px);
+  --dot: rgba(var(--accent-rgb), 0.22);
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.5px);
   background-size: 26px 26px;
   -webkit-mask: radial-gradient(ellipse at 80% 20%, #000 0%, transparent 60%);
           mask: radial-gradient(ellipse at 80% 20%, #000 0%, transparent 60%);
@@ -929,7 +937,36 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 .card-meta p { color: var(--ink-soft); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
 
-.process { background: var(--bg); }
+.process { background: transparent; }
+
+/* ---------- Works in viola ----------
+   Quando "Selected work" entra nello schermo (classe .works-on su <html>, da JS),
+   lo sfondo di tutta la pagina sfuma nel viola del brand e i testi della sezione diventano scuri.
+   Works e le sezioni vicine non hanno sfondo proprio: cambia solo il body, quindi
+   l'entrata e l'uscita sono una dissolvenza unica, senza linee di stacco.
+   --works-fade (da JS) accorcia la dissolvenza quando si scorre veloce. */
+body,
+.works,
+.works .label, .works .label::before, .works .h2,
+.card-meta h3, .card-meta p, .card-meta .idx,
+.card-img, .card-img::after,
+.progress {
+  transition: background-color var(--works-fade, .9s) var(--ease), color var(--works-fade, .9s) var(--ease);
+}
+.works::before { transition: --dot var(--works-fade, .9s) var(--ease); }
+.works-on body { background-color: var(--accent); }
+.works-on .works { color: var(--accent-ink); }
+.works-on .works::before { --dot: rgba(10, 10, 10, 0.3); }
+.works-on .works .label { color: rgba(10, 10, 10, 0.7); }
+.works-on .works .label::before { background-color: var(--accent-ink); }
+.works-on .works .h2,
+.works-on .card-meta h3,
+.works-on .card-meta .idx { color: var(--accent-ink); }
+.works-on .card-meta p { color: rgba(10, 10, 10, 0.62); }
+.works-on .card-img,
+.works-on .card-img::after { background-color: color-mix(in srgb, var(--accent) 78%, #0A0A0A); }
+.works-on .progress { background-color: var(--accent-ink); }
+.works-on .cursor:not(.is-hover) { background-color: var(--accent-ink); box-shadow: none; }
 
 /* ---------- Contacts ---------- */
 .contacts {
@@ -988,9 +1025,12 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  align-items: center;
   color: var(--ink-mute);
 }
 .site-footer a:hover { color: var(--accent); }
+/* Torna su: stesso cerchio con freccia dello scroll-cue della hero */
+.to-top { display: block; color: var(--ink-soft); }
 
 /* ---------- No-JS safety ---------- */
 .js [data-hero] { opacity: 0; }
@@ -1252,7 +1292,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 .cs-meta {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
-  margin: clamp(40px, 6vw, 72px) 0 0; padding-top: 28px; border-top: 1px solid var(--line);
+  margin: clamp(40px, 6vw, 72px) 0 0;
 }
 .cs-meta dt { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); margin-bottom: 8px; }
 .cs-meta dd { margin: 0; font-size: 1rem; color: var(--ink); }
@@ -1292,7 +1332,6 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 .cs-stats {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
-  padding-top: 32px; border-top: 1px solid var(--line);
 }
 .cs-stat .num { display: block; font-size: clamp(2.8rem, 5.4vw, 4.6rem); font-weight: 500; letter-spacing: -.05em; line-height: 1; color: var(--ink); }
 .cs-stat p { margin-top: 10px; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
@@ -1306,15 +1345,13 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 
 .cs-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 40px; }
-.cs-step { border-top: 1px solid var(--line); padding-top: 24px; }
 .cs-step > span { font-size: 12px; color: var(--accent); }
 .cs-step h3 { font-weight: 500; font-size: 1.6rem; letter-spacing: -.03em; line-height: 1.1; margin: 16px 0 10px; }
 .cs-step p { color: var(--ink-soft); }
 
 .cs-next { padding-bottom: clamp(90px, 12vw, 160px); }
-.cs-next-link {
-  display: grid; gap: 40px; margin-top: 32px; padding-top: 40px; border-top: 1px solid var(--line);
-}
+.cs-next > .wrap { padding-top: 40px; border-top: 1px solid var(--line); }
+.cs-next-link { display: grid; gap: 40px; margin-top: 32px; }
 .cs-next-title {
   display: block; font-weight: 500; font-size: clamp(3.4rem, 11vw, 10rem); line-height: .9;
   letter-spacing: -.06em; transition: color .4s;
@@ -1346,10 +1383,19 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .cs-next-cover { aspect-ratio: 4 / 3; }
 }
 
-/* Header fisso: resta fermo durante la transizione home <-> case study, senza sfumare */
+/* Header fisso: resta fermo durante la transizione home <-> case study, senza sfumare.
+   Si mostra solo l'header della nuova pagina: lo snapshot vecchio, con animation: none,
+   veniva stirato alla misura del nuovo e restava visibile come "fantasma". */
 .site-header { view-transition-name: site-header; }
 ::view-transition-group(site-header) { animation: none; }
-::view-transition-old(site-header), ::view-transition-new(site-header) { animation: none; }
+::view-transition-old(site-header) { display: none; }
+::view-transition-new(site-header) { animation: none; }
+/* All'arrivo su una pagina l'header prende subito il suo stato (capsula se la pagina
+   è già scorsa), senza animare la larghezza dalla barra piena: classe tolta da JS. */
+.no-header-anim .site-header, .no-header-anim .site-header .nav { transition: none !important; }
+
+/* Case study: nessun divisore dentro la pagina, solo quello prima di "next project" */
+.cs-page .site-footer { border-top: 0; }
 
 /* ---------- Hero 3D (Three.js): campo di punti dietro al titolo ---------- */
 .hero-inner { z-index: 1; }

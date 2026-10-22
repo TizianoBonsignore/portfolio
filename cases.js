@@ -11,10 +11,84 @@
 const hl = (t) => `<span class="accent">${t}</span>`;
 
 window.CASES = {
+  mediline: {
+    title: "Mediline Supported Living",
+    eyebrow: "UX · UI · WordPress Development",
+    cover: "assets/mediline/med1.webp",
+    coverAlt: "Mediline Supported Living",
+    meta: [
+      ["Company", "Mediline Supported Living Ltd"],
+      ["Sector", "Care and health, supported living"],
+      ["Year", "2026"],
+      ["Services", "User Experience Design<br>User Interface Design<br>WordPress Design & Build"],
+      ["Built with", "WordPress, Elementor<br>Custom child theme<br>Custom post types"],
+      ["Team", "In collaboration with another developer<br>Brand identity by an external studio"],
+    ],
+    links: [{ label: "Visit website", href: "https://www.medilinesupportedliving.co.uk/" }],
+    sections: [
+      {
+        type: "intro",
+        label: "Description",
+        lead: `Mediline is a ${hl("supported living provider")} for adults with learning disabilities, autism, and complex needs across the North West of England.`,
+        body: `I designed the ${hl("UX and UI")} of the new website and built it in ${hl("WordPress")} together with another collaborator, bringing the new brand identity online.`,
+      },
+      { type: "image", src: "assets/mediline/mockup.webp", alt: "Mediline website on desktop, tablet and mobile", ratio: "wide" },
+      {
+        type: "split",
+        label: "Brief",
+        title: "Reassure families. Show the people. Stay easy to update.",
+        body: [
+          `Mediline, part of a ${hl("private equity backed group")}, needed a site that reassured families and showcased the people and homes behind the service.`,
+          `It also had to be easy for a ${hl("non-technical team")} to keep current, without calling a developer every time something changed.`,
+        ],
+        src: "assets/mediline/med6.webp",
+        alt: "Mediline, Our Story page",
+      },
+      {
+        type: "intro",
+        label: "UX",
+        lead: `One website, two audiences, ${hl("two clear paths")}: For Families and For Professionals.`,
+        body: [
+          `${hl("Families")} arrive worried, looking for a safe place for someone they love: they find how Mediline supports them, funding and eligibility, and answers to common questions. ${hl("Professionals")} (social workers, brokerage teams, commissioners) arrive with a checklist and little time: they get specialisms, the referral process with response times, and information for commissioners, without digging.`,
+          "Shared content (About Us, Careers, News & Resources) sits alongside, so both audiences can go deeper when they need to.",
+        ],
+      },
+      { type: "image", src: "assets/mediline/mockup-mobile.webp", alt: "Mediline website on mobile", ratio: "wide" },
+      {
+        type: "split",
+        label: "UI",
+        title: "Turning a brand identity into an interface.",
+        body: [
+          `The visual identity was created by an ${hl("external studio")}. My job was to make it work on screen: the deep navy, the warm palette, the Bounded and Creato Display typefaces, and the line icons became a consistent set of components.`,
+          `Rounded buttons, soft color fields, and value tags like ${hl("Empowering")} and ${hl("Inclusive")} keep the tone friendly, while generous spacing and clear hierarchy keep the content easy to scan.`,
+        ],
+        src: "assets/mediline/med7.webp",
+        alt: "Mediline, Success Stories section",
+        reverse: true,
+      },
+      {
+        type: "steps",
+        label: "What we did",
+        items: [
+          { title: "Custom WordPress build", text: "A lightweight custom child theme on WordPress and Elementor, shaped around the brand system, with a bespoke mobile navigation." },
+          { title: "Success stories", text: "Custom post types so the team can publish stories about the people and homes behind the service." },
+          { title: "Resources and handover", text: "A useful links resource page and a written CMS guide, so the team can keep the site current on their own." },
+        ],
+      },
+      {
+        type: "intro",
+        label: "Delivery",
+        lead: `We managed the ${hl("full delivery lifecycle")}, working with stakeholders on both the client and the investor side.`,
+        body: `The site ${hl("launched on time")} with a full handover. Today the team publishes their own stories ${hl("without developer help")}.`,
+      },
+    ],
+    next: "food-book",
+  },
+
   "food-book": {
     title: "Food Book",
     eyebrow: "UX / UI & React",
-    cover: "assets/food_book.webp",
+    cover: "assets/food_book/food_book.webp",
     coverAlt: "Food Book, UI-UX web app",
     meta: [
       ["Client", "Personal project"],
@@ -68,7 +142,7 @@ window.CASES = {
   "wa-my": {
     title: "WhatsApp Material You",
     eyebrow: "UX · UI · React",
-    cover: "assets/wa_my.webp",
+    cover: "assets/wa_my/wa_my.webp",
     coverAlt: "WhatsApp Material You redesign",
     meta: [
       ["Client", "Personal project"],
@@ -134,7 +208,7 @@ window.CASES = {
   hexaease: {
     title: "Hexaease",
     eyebrow: "UX · UI · Interaction Design",
-    cover: "assets/hexaease.webp",
+    cover: "assets/hexaease/hexaease.webp",
     coverAlt: "Hexaease, UI-UX and interaction design",
     meta: [
       ["Client", "Design Flows Competition 2025"],
@@ -182,49 +256,6 @@ window.CASES = {
         reverse: true,
       },
       { type: "image", src: "assets/hexaease/7.webp", alt: "Hexaease, final screens", ratio: "wide" },
-    ],
-    next: "remember",
-  },
-
-  remember: {
-    title: "Remember",
-    eyebrow: "Front End Web Development",
-    cover: "assets/remember.webp",
-    coverAlt: "Remember, web app",
-    meta: [
-      ["Client", "Personal project"],
-      ["Activities", "Front End Web Development with React.js<br>State Management & React Hooks"],
-      ["Tools", "React.js"],
-    ],
-    links: [{ label: "Try demo", href: "https://test.tizianobonsignore.com/remember/" }],
-    sections: [
-      {
-        type: "intro",
-        label: "Description",
-        lead: `Remember is a ${hl("learning project")} built to get hands-on with React. A ${hl("note-taking web app")} built around core concepts.`,
-        body: `${hl("State management")}, ${hl("component architecture")}, event handling. With a glassmorphism aesthetic keeping things visually interesting.`,
-      },
-      {
-        type: "split",
-        label: "Goal",
-        title: "A small project with a clear goal: actually learn React.",
-        body: `Rather than following tutorials passively, I built something real. Remember uses functional components with ${hl("useState Hooks")}, native ${hl("HTML5 drag & drop")}, and ${hl("custom event handlers")} for all CRUD operations. No UI library shortcuts.`,
-        src: "assets/remember/2.webp",
-        alt: "Remember, drag and drop notes",
-      },
-      { type: "image", src: "assets/remember/3.webp", alt: "Remember, interface", ratio: "wide" },
-      {
-        type: "split",
-        label: "Interface",
-        title: "Glassmorphism and a toast system built from scratch.",
-        body: [
-          "The interface uses backdrop blur and transparency to create a layered, modern feel without getting in the way of readability. Every visual choice was made to reinforce the note-taking experience.",
-          `The toast notification system uses ${hl("bouncy cubic-bezier transitions")} and auto-dismiss.`,
-        ],
-        src: "assets/remember/4.webp",
-        alt: "Remember, toast notifications",
-        reverse: true,
-      },
     ],
     next: "termoli",
   },
@@ -398,6 +429,6 @@ window.CASES = {
       },
       { type: "image", src: "assets/drype/20-2.webp", alt: "Drype, social media content", ratio: "wide" },
     ],
-    next: "food-book",
+    next: "mediline",
   },
 };
